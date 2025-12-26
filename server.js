@@ -29,7 +29,14 @@ const app = express();
 app.use(express.json({ limit: '200mb' })); 
 app.use(express.urlencoded({ limit: '200mb', extended: true }));
 
-app.use(cors()); // Fixes CORS errors between Frontend (5173) and Backend (5000)
+app.use(cors({
+    origin: [
+        'http://localhost:5173',   // Vite / React frontend
+        'http://127.0.0.1:5173',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true
+}));
 
 // --- STATIC FOLDER (Crucial for Images/PDFs) ---
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
