@@ -31,7 +31,7 @@ app.use(express.urlencoded({ limit: '200mb', extended: true }));
 
 app.use(cors({
     origin: [
-        'http://localhost:5173',   // Vite / React frontend
+        'http://localhost:5173',   
         'http://127.0.0.1:5173',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
