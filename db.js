@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'srv1717.hstgr.io ',
+  host: process.env.DB_HOST || 'srv1717.hstgr.io',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASS || '', 
   database: process.env.DB_NAME || 'symbiotec_db',
