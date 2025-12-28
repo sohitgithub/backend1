@@ -1,28 +1,25 @@
-const mysql = require('mysql2');
-const dotenv = require('dotenv');
-
-dotenv.config();
+const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'srv1717.hstgr.io',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '', 
-  database: process.env.DB_NAME || 'symbiotec_db',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT || 3306,
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  connectTimeout: 10000
 });
 
-// Promise-based wrapper export karein
-const db = pool.promise();
+// 🔍 Startup connection test
+(async () => {
+  try {
+    const conn = await pool.getConnection();
+    console.log(">>> ✅ MySQL Connected (Render)");
+    conn.release();
+  } catch (err) {
+    console.error(">>> ❌ Database Connection Failed:", err);
+  }
+})();
 
-// Connection Test (Optional but good for debugging)
-pool.getConnection((err, connection) => {
-    if (err) console.error(">>> ❌ Database Connection Failed:", err.message);
-    else {
-        console.log(">>> ✅ Connected to Database");
-        connection.release();
-    }
-});
-
-module.exports = db;
+module.exports = pool;
